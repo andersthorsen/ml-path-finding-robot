@@ -11,21 +11,28 @@ the part you replace, step by step, is the **brain**.
 
 ## The learning path
 
-1. **Understand the environment.** Drive the robot manually and watch how the
-   two line sensors respond as the robot crosses a path. The sensor readings
-   are the *inputs* any brain — hand-written or learned — has to work with.
-2. **Study the hand-written baseline.** `ReactiveLineFollower` is a small
-   proportional controller: steer toward the darker sensor, spin to re-acquire
-   the line when both sensors go bright. It is deliberately simple, readable,
-   and *good enough* — the reference every learned policy must beat.
-3. **Plug in a learned policy.** The [`Policy`](../src/control/Policy.ts)
-   interface is the seam: `decide(sensorReadings) → motorCommand`. A trained
-   network implements the same one method as the baseline and drops into the
-   simulation unchanged. Nothing else in the codebase needs to know whether the
-   brain was written or trained.
-4. **Iterate.** Train against the five provided paths (straight line, circle,
-   sine wave, maze, colour-forked tree — roughly in order of difficulty),
-   compare against the baseline, and tighten the loop.
+A path-finding robot is a *sequential decision* problem, not a dataset
+problem, so the curriculum is built around **learning as optimisation**: one
+score function is the teacher, and every step tries to beat the score of the
+step before it. Each step lives in its own folder with instructions, a
+`workshop.ts` skeleton full of TODOs, and a `solved.ts` reference — all
+algorithms written by hand, no ML library.
+
+| Step | Lesson |
+| --- | --- |
+| `00-drive` | Drive manually, watch the live sensor readout — know the inputs and outputs every brain has to work with |
+| `01-silly-policy` | A constant-motor policy plus the scoring harness; score the hand-written `ReactiveLineFollower` baseline as the target to beat |
+| `02-tune-by-hand` | Expose the baseline's tuning constants (`cruise`, `steerGain`, `searchPower`); tune manually, then grid-search. The core insight: *learning is automated parameter tuning* |
+| `03-hill-climbing` | Random search and hill climbing over those parameters: tweak them a little, keep the tweak only when the score improves, repeat. The first genuine learning, and it can honestly beat the hand-tuned baseline |
+| `04-evolution` | Evolution strategies over a tiny neural network's weights — population, mutation, selection, watched live on the canvas |
+| `05-imitation` | Supervised learning as one honest step: record driving, fit a linear model then a neural net on it, and learn that imitation can at best equal its teacher |
+| `06-reinforcement` | Learn from the score itself — reinforcement learning over discretised states, good enough to solve the maze |
+| `07-generalization` | Train on some paths, evaluate on held-out ones; add sensor noise; extend the policy input with a goal to solve the red/green tree fork |
+
+The [`Policy`](../src/control/Policy.ts) interface is the seam every step
+plugs into: `decide(sensorReadings) → motorCommand`. A learned brain
+implements the same one method as the hand-written baseline and drops into
+the simulation unchanged.
 
 ## Why a simulator
 

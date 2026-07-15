@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ML Path-Finding Robot — Bit:Bot PRO simulator</title>
+    <link rel="stylesheet" href="/src/ui/style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="stage">
+        <canvas id="canvas" aria-label="Robot on the paper"></canvas>
+      </section>
+
+      <aside class="panel">
+        <h1>Bit:Bot PRO simulator</h1>
+
+        <div class="field">
+          <label for="path">Path</label>
+          <select id="path"></select>
+          <p id="path-desc" class="hint"></p>
+        </div>
+
+        <div class="field">
+          <span class="label">Mode</span>
+          <div class="modes" role="group" aria-label="Control mode">
+            <button id="mode-manual" type="button" class="mode" aria-pressed="true">Manual</button>
+            <button id="mode-auto" type="button" class="mode" aria-pressed="false">Auto</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="row">
+            <button id="run" type="button">Pause</button>
+            <button id="reset" type="button">Reset</button>
+          </div>
+        </div>
+
+        <div class="field" id="manual-controls">
+          <span class="label">Drive (hold)</span>
+          <div class="dpad">
+            <button class="hold" data-input="forward" type="button" style="grid-area: up">▲</button>
+            <button class="hold" data-input="left" type="button" style="grid-area: left">◀</button>
+            <button class="hold" data-input="back" type="button" style="grid-area: down">▼</button>
+            <button class="hold" data-input="right" type="button" style="grid-area: right">▶</button>
+          </div>
+          <span class="label">Wheels (independent)</span>
+          <div class="wheels">
+            <div class="wheel">
+              <button class="hold" data-input="leftWheelForward" type="button">L ▲</button>
+              <button class="hold" data-input="leftWheelBack" type="button">L ▼</button>
+            </div>
+            <div class="wheel">
+              <button class="hold" data-input="rightWheelForward" type="button">R ▲</button>
+              <button class="hold" data-input="rightWheelBack" type="button">R ▼</button>
+            </div>
+          </div>
+          <p class="hint">Keyboard: <kbd>W</kbd>/<kbd>S</kbd> left wheel · <kbd>↑</kbd>/<kbd>↓</kbd> right wheel · <kbd>←</kbd>/<kbd>→</kbd> turn</p>
+        </div>
+
+        <dl class="readout">
+          <div><dt>Left sensor</dt><dd id="r-left">—</dd></div>
+          <div><dt>Right sensor</dt><dd id="r-right">—</dd></div>
+          <div><dt>Motors (L / R)</dt><dd id="r-motors">—</dd></div>
+          <div><dt>Pose</dt><dd id="r-pose">—</dd></div>
+        </dl>
+      </aside>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
